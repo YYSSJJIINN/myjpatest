@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -55,5 +56,17 @@ public class MemberService {
         List<MemberDTO> list = listE.stream().map(m -> new MemberDTO(m)).toList();
 
         return list;
+    }
+
+    public MemberDTO getData(long number) {
+
+        // null 값 고려
+        Optional<MemberEntity> opM = repo.findById(number);
+
+        MemberEntity entity = opM.orElse(null);
+
+        if(entity != null)
+            return new MemberDTO(entity);
+        return null;
     }
 }
