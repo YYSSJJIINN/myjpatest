@@ -31,7 +31,7 @@ public class MemberController {
         int result = memberService.insertData(dto);
         if( result == 1 )
             return ResponseEntity.status(HttpStatus.CREATED).body(dto);
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("중복된 회원이 존재합니다.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("중복된 회원이 존재합니다.");
     }
 
     // 페이징 처리
@@ -54,11 +54,18 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("조회에 실패했습니다.");
     }
 
-//    // 데이터 수정
-//    public ResponseEntity updateData() {
-//        return ResponseEntity.ok().body();
-//    }
-//
+    // 데이터 수정
+    @PutMapping("/member/{id}")
+    public ResponseEntity updateData(@PathVariable("id") String userId,
+                                        @RequestBody MemberDTO dto) {
+
+        // userId의 dto를 변경
+        int result = memberService.updateData(userId, dto);
+        if( result == 1 )
+            return ResponseEntity.status(HttpStatus.OK).body(dto);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("수정에 실패했습니다.");
+    }
+
 //    // 데이터 삭제
 //    public ResponseEntity deleteData() {
 //        return ResponseEntity.ok().body();

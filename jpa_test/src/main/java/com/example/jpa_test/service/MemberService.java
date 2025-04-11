@@ -69,4 +69,22 @@ public class MemberService {
             return new MemberDTO(entity);
         return null;
     }
+
+    public int updateData(String userId, MemberDTO dto) {
+
+        MemberEntity entity = repo.findByUserId(userId);
+
+        if(entity != null) {
+            // id는 수정불가능이니까 작성하지 않는다.
+            entity.setUserName(dto.getUserName());
+            entity.setPassword(dto.getPassword());
+            entity.setAge(dto.getAge());
+            entity.setEmail(dto.getEmail());
+            repo.save(entity);
+
+            return 1;
+        }
+        // userId로 찾으려 했던 entity가 null인 경우
+        return 0;
+    }
 }
