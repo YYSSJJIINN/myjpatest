@@ -87,4 +87,18 @@ public class MemberService {
         // userId로 찾으려 했던 entity가 null인 경우
         return 0;
     }
+
+    public int deleteData(long number) {
+
+        // 삭제는 디폴트를 삭제실패로 한다
+        int result = 0;
+
+        MemberDTO dto = getData(number);
+
+        if( dto != null ) {
+            repo.deleteById(number);
+            result = 1;
+        }
+        return result;
+    }
 }

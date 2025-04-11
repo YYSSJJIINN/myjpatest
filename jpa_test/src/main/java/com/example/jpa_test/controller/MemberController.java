@@ -66,10 +66,15 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("수정에 실패했습니다.");
     }
 
-//    // 데이터 삭제
-//    public ResponseEntity deleteData() {
-//        return ResponseEntity.ok().body();
-//    }
-//
+    // 데이터 삭제
+    @DeleteMapping("/members/{num}")
+    public ResponseEntity deleteData(@PathVariable("num") long number) {
 
+        // 삭제의 결과(성공이냐 실패냐 여부)를 int형인 숫자값을 반환받음
+        int result = memberService.deleteData(number);
+        // 반환받은 숫자로 조건문 작성
+        if( result == 1 )
+            return ResponseEntity.status(HttpStatus.OK).body("삭제 성공");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 정보가 존재하지 않습니다.");
+    }
 }
