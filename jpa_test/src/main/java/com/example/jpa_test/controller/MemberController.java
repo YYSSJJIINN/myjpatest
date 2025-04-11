@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -18,14 +19,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    // 데이터 리스트 조회
+    // 데이터 리스트 조회(전체 회원 목록 조회)
     @GetMapping("/members")
     public ResponseEntity getList() {
         List<MemberDTO> list = memberService.getList();
         return ResponseEntity.ok().body(list);
     }
 
-    // 데이터 저장
+    // 데이터 저장(회원가입)
     @PostMapping("/members")
     public ResponseEntity insertData(@RequestBody MemberDTO dto) {
         int result = memberService.insertData(dto);
@@ -42,7 +43,7 @@ public class MemberController {
         return ResponseEntity.ok().body(list);
     }
 
-    // 데이터 상세정보 조회
+    // 선택 데이터 조회(선택 회원 조회)
     @GetMapping("/members/{number}")
     // PK의 타입을 Long으로 해뒀으니
     public ResponseEntity getData(@PathVariable("number") long number) {
@@ -54,7 +55,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("조회에 실패했습니다.");
     }
 
-    // 데이터 수정
+    // 데이터 수정(선택 회원 정보 수정)
     @PutMapping("/member/{id}")
     public ResponseEntity updateData(@PathVariable("id") String userId,
                                         @RequestBody MemberDTO dto) {
@@ -66,7 +67,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("수정에 실패했습니다.");
     }
 
-    // 데이터 삭제
+    // 데이터 삭제(선택 회원 삭제)
     @DeleteMapping("/members/{num}")
     public ResponseEntity deleteData(@PathVariable("num") long number) {
 
@@ -76,5 +77,18 @@ public class MemberController {
         if( result == 1 )
             return ResponseEntity.status(HttpStatus.OK).body("삭제 성공");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 정보가 존재하지 않습니다.");
+    }
+
+    // 로그인
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody Map<String, String> map) {
+
+        int result = memberService.login(map.get("username"), map.get("password"));
+
+        if( result == 1 )
+            return ResponseEntity.status(HttpStatus.OK).body("로그인 성공");
+        else if( result == 0 )
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("틀린 비밀번호입니다.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 id 입니다.");
     }
 }

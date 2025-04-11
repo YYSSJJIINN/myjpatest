@@ -3,6 +3,7 @@ package com.example.jpa_test.service;
 import com.example.jpa_test.domain.MemberEntity;
 import com.example.jpa_test.dto.MemberDTO;
 import com.example.jpa_test.repo.MemberRepo;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,9 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepo repo;
+
+    // 로그인 상태 유지를 위한 객체 주입
+    private final HttpSession session;
 
     public List<MemberDTO> getList() {
 
@@ -98,6 +102,18 @@ public class MemberService {
         if( dto != null ) {
             repo.deleteById(number);
             result = 1;
+        }
+        return result;
+    }
+
+    public int login(String username, String password) {
+
+        int result = 1;
+        result = repo.login(username, password);
+        // 로그인에 성공한다면
+        if( result == 1 ) {
+            // 로그인 사용자 정보 저장한다.
+            session.setAttribute("username", username);
         }
         return result;
     }
