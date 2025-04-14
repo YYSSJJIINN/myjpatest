@@ -18,7 +18,6 @@ public class MemberDTO {
     private String email;
 
     public MemberDTO(MemberEntity entity) {
-        this.number = entity.getNumber();
         this.userId = entity.getUserId();
         this.userName = entity.getUserName();
         this.password = entity.getPassword();

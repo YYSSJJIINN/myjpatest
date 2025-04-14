@@ -22,7 +22,7 @@ public class MemberService {
 
     private final MemberRepo repo;
 
-    // 로그인 상태 유지를 위한 객체 주입
+    // 로그인 상태 유지를 위한 세션 객체 주입
     private final HttpSession session;
 
     public List<MemberDTO> getList() {

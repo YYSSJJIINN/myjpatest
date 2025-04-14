@@ -38,9 +38,10 @@ public class MemberController {
     // 페이징 처리
     @GetMapping("/list_page")
     public ResponseEntity listPage(@RequestParam(defaultValue="0") int start,
-                                    @RequestParam(defaultValue="5") int page) {
+                                    @RequestParam(defaultValue="4") int page) {
         List<MemberDTO> list = memberService.getListPage(start, page);
-        return ResponseEntity.ok().body(list);
+//        return ResponseEntity.ok().body(list);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     // 선택 데이터 조회(선택 회원 조회)
